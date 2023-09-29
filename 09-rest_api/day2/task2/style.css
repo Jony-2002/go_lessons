@@ -1,0 +1,38 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#form {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+#form div {
+  margin-bottom: 20px;
+}
+
+#form div label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+#form div input {
+  display: inline-block;
+  width: 360px;
+  height: 35px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
