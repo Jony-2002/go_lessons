@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 4em;
+      }
+      .formSend {
+        display: flex;
+        flex-direction: column;
+        width: 15em;
+        gap: 0.5em;
+        margin: 2em;
+      }
+      .input {
+        padding: 0.5em;
+      }
+      .inputTwo {
+        padding: 0.5em;
+        width: 20em;
+      }
+      .textCors {
+        width: 20em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <input type="text" placeholder="Ip and Port" class="inputTwo" id="ip" />
+    <p>Dfault Ip " http://192.168.43.28:3636/file "</p>
+
+    <form id="formSend" class="formSend">
+      <input type="file" id="filesend" />
+      <input type="text" name="name" placeholder="name" class="input" id="" />
+      <input
+        type="text"
+        name="surname"
+        placeholder="surname"
+        class="input"
+        id=""
+      />
+      <input
+        type="text"
+        name="position"
+        placeholder="position"
+        class="input"
+        id=""
+      />
+      <input
+        type="text"
+        name="salary"
+        placeholder="salary"
+        class="input"
+        id=""
+      />
+      <input type="submit" />
+    </form>
+
+    <a href="login.html">Login</a>
+
+    <!-- <textarea name="textCors" id="" cols="150" rows="10">
+       "Access-Control-Allow-Origin", evt.AccessIP
+	   "Access-Control-Allow-Credentials", "true"
+	   "Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, ResponseType, accept, origin, Cache-Control, X-Requested-With")
+	   "Access-Control-Allow-Methods", "POST, GET, PUT, DELETE"
+	
+
+	// c.Next()
+    </textarea> -->
+    <script>
+      const el = document.getElementById("formSend");
+      const Ip = document.getElementById("ip");
+
+      el.onsubmit = (evt) => {
+        evt.preventDefault();
+        var fileData = evt.target[0].files[0];
+        // console.log(evt.target[1].value);
+        var rawData = new ArrayBuffer();
+        var reader = new FileReader();
+
+        // reader.readAsText(file)
+
+        reader.onload = function (e) {
+          rawData = e.target.result;
+          // var chunkes = rawData.byteLength / 2  // set chunk size
+          // console.log(chunkes);
+          // console.log(rawData.byteLength);
+          var chunkes = 100536; // set chunk size
+          var offset = 0; // ofsste will be used slice the element from rawData
+          var bt = "";
+          // console.log(rawData.byteLength);
+          for (let index = 0; index < rawData.byteLength; index++) {
+            var chunk = rawData.slice(offset, chunkes + offset);
+            // bt += btoa(String.fromCharCode(null,new Uint8Array(chunk)))
+            bt += btoa(String.fromCharCode(...new Uint8Array(chunk)));
+            offset += chunkes;
+          }
+
+          var data = JSON.stringify({
+            ImageUrl: bt,
+            surname: evt.target[2].value,
+            position: evt.target[4].value,
+            salary: evt.target[3].value,
+            name: evt.target[1].value,
+          });
+          evt.target[1].value = "";
+
+          var xhr = new XMLHttpRequest();
+          xhr.withCredentials = true;
+
+          xhr.addEventListener("readystatechange", function () {
+            if (this.readyState === 4) {
+              console.log(this.responseText);
+            }
+          });
+          console.log(Ip.value);
+
+          xhr.open("POST", Ip.value);
+          xhr.setRequestHeader("Content-Type", "application/json");
+
+          xhr.send(data);
+        };
+
+        reader.loadend = function () {
+          console.log("load end");
+          alert("the File has been transferred.");
+        };
+        reader.readAsArrayBuffer(fileData);
+      };
+    </script>
+  </body>
+</html>
